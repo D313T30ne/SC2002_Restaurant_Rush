@@ -9,24 +9,70 @@ The repository currently contains package and class skeletons only. `Main` has n
 ## Project Structure
 
 ```text
-src/restaurantrush/
-	Main.java                  Application entry point
-	boundary/                  CLI input and state display
-	control/                   Turn orchestration, configuration, arrival and result rules
-	entity/customer/           Customer types and customer state
-	entity/menu/               Menu items and combo meals
-	entity/order/              Orders and order status
-	entity/restaurant/         Restaurant, tables and waiting queue
-	entity/staff/              Staff roles and waiter tasks
-	pricing/                   Pricing policies
-	util/                      Shared utilities such as money handling
-test/
-	restaurantrush/             Tests, organized by production package
-docs/
-	declarations/              Required signed declarations
-	report/                    Final PDF report and design evidence
-	test-notes/                Reproducible test scenarios and results
-	uml/                       Class and sequence diagrams
+restaurant-rush/
+├── README.md
+├── .gitignore
+├── docs/
+│   ├── uml/
+│   ├── report/
+│   ├── test-notes/
+│   └── declarations/
+├── src/restaurantrush/
+│   ├── Main.java
+│   │
+│   ├── boundary/                       (Member D)
+│   │   ├── GameCLI.java                # main menu, collects manager choices
+│   │   ├── StateDisplay.java           # start-of-turn + end-of-turn displays
+│   │   └── InputReader.java            # input validation, re-prompt on bad input
+│   │
+│   ├── control/                        (Member D)
+│   │   ├── GameController.java         # runs the 18 turns and the six steps
+│   │   ├── GameConfig.java             # base setting: turns, tables, arrival turns
+│   │   ├── ArrivalScheduler.java       # who arrives on turns 1, 4, 7, 10, 13, 16
+│   │   └── ObjectiveChecker.java       # victory/defeat check after turn 18
+│   │
+│   ├── entity/
+│   │   ├── customer/                   (Member A)
+│   │   │   ├── Customer.java           # abstract: satisfaction, state, wait loss
+│   │   │   ├── RegularCustomer.java
+│   │   │   ├── CustomerState.java      # enum: WAITING, SEATED, ORDERED, EATING, READY_TO_PAY, PAID, LEFT
+│   │   │   ├── VIPCustomer.java        # (S2)
+│   │   │   └── CriticCustomer.java     # (S2)
+│   │   │
+│   │   ├── staff/                      (Member B)
+│   │   │   ├── Staff.java              # abstract
+│   │   │   ├── Waiter.java
+│   │   │   ├── WaiterTask.java         # enum: SEAT, TAKE_ORDER, SERVE, WAIT
+│   │   │   ├── Chef.java
+│   │   │   ├── Cashier.java
+│   │   │   └── Host.java               # (S3)
+│   │   │
+│   │   ├── order/                      (Member B)
+│   │   │   ├── Order.java
+│   │   │   └── OrderStatus.java        # enum: PLACED, PREPARING, READY, SERVED, PAID, CANCELLED
+│   │   │
+│   │   ├── menu/                       (Member C)
+│   │   │   ├── MenuItem.java           # name, price in cents, prep units
+│   │   │   ├── Menu.java               # Salad, Burger, Pasta
+│   │   │   └── ComboMeal.java          # (S3)
+│   │   │
+│   │   └── restaurant/                 (Member B)
+│   │       ├── Restaurant.java         # holds tables, queue, staff, revenue
+│   │       ├── Table.java
+│   │       └── WaitingQueue.java
+│   │
+│   ├── pricing/                        (Member C)
+│   │   ├── PricingPolicy.java          # interface: calculate bill
+│   │   ├── StandardPricing.java
+│   │   └── HappyHourPolicy.java        # (S3)
+│   │
+│   └── util/                           (Member C)
+│       └── Money.java                  # integer cents, formats as dollars
+│
+└── test/restaurantrush/
+    ├── entity/                         # tests mirror the src packages
+    ├── control/
+    └── pricing/
 ```
 
 The package layout is a sensible starting point for parallel work: it separates the CLI, game coordination, domain objects, and pricing. It does not by itself prevent merge conflicts. In particular, `GameController`, `GameConfig`, shared entity APIs, and `Main` will be integration hotspots until their contracts are agreed.
