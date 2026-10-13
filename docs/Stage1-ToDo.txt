@@ -8,7 +8,7 @@ Here's the redistribution for 5 members, with the UML work built in. Each person
 | **4** | `entity/menu`, `pricing`, `util`, `boundary` | Report: design discussion draft |
 | **5** | `control`, `Main` | README, tags and stage comparisons |
 
-**Member 1: Customers + class diagram**
+**Zhenghong: Customers + class diagram**
 - [ ] `Customer` (abstract), `RegularCustomer`, `CustomerState`
 - [ ] Satisfaction (starts at 100, loses 8 per waiting turn, minimum 0) and abandonment at 0
 - [ ] Food choice rule: deterministic or seeded, documented, and shown once the order is placed
@@ -16,7 +16,7 @@ Here's the redistribution for 5 members, with the UML work built in. Each person
 - [ ] Create the Stage 1 class diagram skeleton, then collect each member's classes into it
 - [ ] Show attributes and operations with visibility, inheritance, and multiplicities
 
-**Member 2: Staff + sequence diagram**
+**Yz: Staff + sequence diagram**
 - [ ] `Staff` (abstract), `Waiter`, `WaiterTask`, `Chef`, `Cashier`
 - [ ] Waiter does one task per turn; Chef advances one unit per turn
 - [ ] Cashier is automatic: one payment per turn, oldest READY_TO_PAY first
@@ -30,7 +30,7 @@ Here's the redistribution for 5 members, with the UML work built in. Each person
 - [ ] Run the full game and record one reproducible victory and one defeat (seed and inputs)
 - [ ] Confirm the game works offline
 
-**Member 4: Menu, pricing and CLI**
+**KL: Menu, pricing and CLI**
 - [ ] `MenuItem`, `Menu` (Salad $9 / 1 unit, Burger $15 / 1 unit, Pasta $18 / 2 units)
 - [ ] `Money` (integer cents, two-decimal display)
 - [ ] `PricingPolicy`, `StandardPricing`
