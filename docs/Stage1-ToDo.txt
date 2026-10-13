@@ -23,7 +23,7 @@ Here's the redistribution for 5 members, with the UML work built in. Each person
 - [ ] Draft the Stage 1 sequence diagram: arrival, order, Waiter and Chef actions, READY then SERVED, eating, payment and the result check
 - [ ] Include the guards (invalid choice, a dish not yet READY) and the turn loop
 
-**Member 3: Orders and restaurant state**
+**Zeph: Orders and restaurant state**
 - [ ] `Order`, `OrderStatus`, `Table` (2 tables), `WaitingQueue`, `Restaurant` (holds revenue)
 - [ ] Timing rules: serve only if already READY, one full turn of eating, pay at the earliest the turn after READY_TO_PAY
 - [ ] On abandonment, cancel the unfinished order and free the table
