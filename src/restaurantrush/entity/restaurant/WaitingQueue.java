@@ -4,6 +4,7 @@ import restaurantrush.entity.customer.Customer;
 import java.util.ArrayList;
 import java.util.List;
 
+//Note: Does not currently actually act as a queue
 public class WaitingQueue {
 
     private final List<Customer> customerList = new ArrayList<>();
