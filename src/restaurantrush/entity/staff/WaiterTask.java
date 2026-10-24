@@ -1,4 +1,8 @@
 package restaurantrush.entity.staff;
 
-public class WaiterTask {
+public enum WaiterTask {
+    SEAT_CUSTOMER,
+    TAKE_ORDER,
+    SERVE_ORDER,
+    WAIT
 }
