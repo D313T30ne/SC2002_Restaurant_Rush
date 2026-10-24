@@ -1,8 +1,9 @@
 package restaurantrush.entity.staff;
 
-public class Staff {
-    private String name;
-    protected boolean actedThisTurn;
+
+public abstract class Staff {
+  private final String name;
+    private boolean actedThisTurn;
  
     protected Staff(String name) {
         this.name = name;
@@ -22,6 +23,5 @@ public class Staff {
         return name;
     }
  
-    /** E.g. "Waiter", "Chef", "Cashier". */
     public abstract String getRole();
 }
