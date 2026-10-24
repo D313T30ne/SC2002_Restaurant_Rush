@@ -1,8 +1,7 @@
 package restaurantrush.entity.staff;
 
-import java.util.List;
- 
-import restaurantrush.entity.order.Order;
+import restaurantrush.entity.customer.Customer;
+import restaurantrush.entity.restaurant.Restaurant;
 
 public class Cashier extends Staff {
     public Cashier(String name) {
@@ -15,20 +14,18 @@ public class Cashier extends Staff {
     }
  
     /**
-     * Pick the oldest order that is READY_TO_PAY (and became so on an EARLIER turn),
-     * process the payment, and return it. Return null if nobody can pay.
-     *
-     * @param orders      all active orders, in the order they became READY_TO_PAY
-     * @param currentTurn used to skip anyone who became READY_TO_PAY this turn
+     * Returns the customer who paid this turn, or null if nobody could pay.
+     * Only customers who became READY_TO_PAY on an EARLIER turn can pay
+     * (c.getReadyToPayTurn() < turn).
      */
-    public Order processPayment(List<Order> orders, int currentTurn) {
-        if (hasActedThisTurn()) {
+    public Customer collectPayment(Restaurant r, int turn) {
+        if (actedThisTurn) {
             return null;
         }
-        // TODO: find oldest order with status READY_TO_PAY and readyToPayTurn < currentTurn
-        // TODO: customer.recordSatisfaction(); mark order + customer PAID; free the table
-        // TODO: restaurant revenue += bill (controller or Restaurant does this with the returned order)
-        // TODO: markActed() once a payment is made
+        // TODO: loop r.getCustomers(), find state READY_TO_PAY with readyToPayTurn < turn,
+        //       pick the one with the smallest readyToPayTurn (oldest)
+        // TODO: r.recordPayment(c);  (adds bill to revenue, records satisfaction, marks PAID, frees table)
+        // TODO: actedThisTurn = true; return c;
         return null;
     }
 }
