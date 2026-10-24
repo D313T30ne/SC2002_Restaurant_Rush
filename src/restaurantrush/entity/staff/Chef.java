@@ -12,21 +12,21 @@ public class Chef extends Staff {
         return "Chef";
     }
  
-    /** Advance the chosen order by one unit. When the last unit is done, order becomes READY. */
-    public void prepare(Order order) {
-        if (hasActedThisTurn()) {
-            throw new IllegalStateException("Chef has already acted this turn.");
+    public ActionResult advanceOrder(Order o) {
+        if (actedThisTurn) {
+            return ActionResult.failure("Chef has already acted this turn.");
         }
-        // TODO guard: order must have been taken and not yet READY / SERVED / cancelled
-        // TODO: order.advancePreparation();  -> Order sets READY when remaining units hit 0
-        markActed();
+        // TODO guard: o is not cancelled, not already READY / SERVED / PAID
+        // TODO: o.advancePreparation();  (Order becomes READY when units hit 0)
+        actedThisTurn = true;
+        return ActionResult.success("Order advanced.");
     }
  
-    /** Manager chose WAIT. */
-    public void doNothing() {
-        if (hasActedThisTurn()) {
-            throw new IllegalStateException("Chef has already acted this turn.");
+    public ActionResult waitTurn() {
+        if (actedThisTurn) {
+            return ActionResult.failure("Chef has already acted this turn.");
         }
-        markActed();
+        actedThisTurn = true;
+        return ActionResult.success("Chef waits.");
     }
 }
