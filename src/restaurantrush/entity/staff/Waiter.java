@@ -24,33 +24,70 @@ public class Waiter extends Staff {
         if (actedThisTurn) {
             return ActionResult.failure("Waiter has already acted this turn.");
         }
-        // TODO guard: t.isFree()
-        // TODO guard: c is WAITING (in the queue)
-        // TODO: r.getWaitingQueue().remove(c); t.seat(c); c.setState(CustomerState.SEATED);
+
+        if (c == null || t == null) {
+            return ActionResult.failure("Invalid customer or table selection.");
+        }
+    
+        if (!t.isFree()) {
+            return ActionResult.failure("Table " + t.getId() + " is currently occupied.");
+        }
+    
+        if (c.getState() != CustomerState.WAITING) {
+            return ActionResult.failure("Customer " + c.getId() + " is not waiting in queue.");
+        }
+    
+        r.getWaitingQueue().remove(c);
+        t.seat(c);
+        c.setState(CustomerState.SEATED);
+        
         actedThisTurn = true;
-        return ActionResult.success("Customer seated.");
+        return ActionResult.success("Customer " + c.getId() + " seated at Table " + t.getId() + ".");
     }
  
     public ActionResult takeOrder(Customer c, Restaurant r, Menu menu) {
         if (actedThisTurn) {
             return ActionResult.failure("Waiter has already acted this turn.");
         }
-        // TODO guard: c is SEATED and has no order yet
-        // TODO: MenuItem item = c.chooseItem(menu);
-        // TODO: Money bill = pricing.priceFor(item, c);   (price locked here)
-        // TODO: create Order, r.registerOrder(order); c.setOrder(order); c.setState(CustomerState.ORDERED);
+
+        if (c == null) {
+            return ActionResult.failure("Invalid customer.");
+        }
+    
+        if (c.getState() != CustomerState.SEATED || c.getOrder() != null) {
+            return ActionResult.failure("Customer " + c.getId() + " is not ready to order.");
+        }
+    
+        MenuItem item = c.chooseItem(menu);
+        Money bill = pricing.priceFor(item, c);
+    
+        Order order = new Order(c, item, bill);
+        r.registerOrder(order);
+        c.setOrder(order);
+        c.setState(CustomerState.ORDERED);
+        
         actedThisTurn = true;
-        return ActionResult.success("Order taken.");   // TODO: include the food choice in the message
+        return ActionResult.success("Took order for Customer " + c.getId() + ": " + item.getName() + ".");
     }
  
     public ActionResult serveOrder(Order o, int turn) {
         if (actedThisTurn) {
             return ActionResult.failure("Waiter has already acted this turn.");
         }
-        // TODO guard: o.isReady()  (Waiter acts before Chef, so READY means finished on an earlier turn)
-        // TODO: o.markServed(); o.getCustomer().markServed(turn);
+
+        if (o == null) {
+            return ActionResult.failure("Invalid order.");
+        }
+    
+        if (!o.isReady()) {
+            return ActionResult.failure("Order is not ready to be served yet.");
+        }
+    
+        o.markServed();
+        o.getCustomer().markServed(turn);
+        
         actedThisTurn = true;
-        return ActionResult.success("Order served.");
+        return ActionResult.success("Served order " + o.getId() + " to Customer " + o.getCustomer().getId() + ".");
     }
  
     public ActionResult waitTurn() {
