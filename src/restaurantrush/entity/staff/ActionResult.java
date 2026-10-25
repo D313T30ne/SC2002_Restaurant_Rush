@@ -1,6 +1,5 @@
 package restaurantrush.entity.staff;
 
-/** Outcome of a staff action. On failure the message explains why (CLI prints it and re-prompts). */
 public class ActionResult {
 
     private final boolean success;
