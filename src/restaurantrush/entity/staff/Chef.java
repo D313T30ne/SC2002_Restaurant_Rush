@@ -16,8 +16,17 @@ public class Chef extends Staff {
         if (actedThisTurn) {
             return ActionResult.failure("Chef has already acted this turn.");
         }
-        // TODO guard: o is not cancelled, not already READY / SERVED / PAID
-        // TODO: o.advancePreparation();  (Order becomes READY when units hit 0)
+
+        if (o == null) {
+            return ActionResult.failure("Invalid order.");
+        }
+    
+        if (o.getStatus() != OrderStatus.PLACED && o.getStatus() != OrderStatus.PREPARING) {
+            return ActionResult.failure("Order cannot be prepared (status: " + o.getStatus() + ").");
+        }
+
+        o.advancePreparation();
+        
         actedThisTurn = true;
         return ActionResult.success("Order advanced.");
     }
