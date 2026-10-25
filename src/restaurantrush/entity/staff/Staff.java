@@ -10,7 +10,6 @@ public abstract class Staff {
         this.actedThisTurn = false;
     }
  
-    /** Controller calls this at the start of every turn. */
     public void startTurn() {
         actedThisTurn = false;
     }
