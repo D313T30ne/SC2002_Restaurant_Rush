@@ -22,6 +22,7 @@ public class StateDisplay {
             System.out.println("Average satisfaction: " + r.getAverageSatisfaction());
         }
 
+        System.out.println("========================================");
         System.out.println("Waiting Queue: ");
         WaitingQueue wq = r.getWaitingQueue();
         if (wq.isEmpty()) {
@@ -32,18 +33,23 @@ public class StateDisplay {
             }
         }
 
+        System.out.println("========================================");
         System.out.println("Occupied Tables: ");
         for (Table table : r.getTables()) {
             if (!table.isFree()) {
+                System.out.println("Table No. " + table.getNumber()+" id: " + table.getOccupant().getId() + " Satisfaction: " + table.getOccupant().getSatisfaction());
+            }else{
                 System.out.println("Table No. " + table.getNumber());
             }
         }
 
+        System.out.println("========================================");
         System.out.println("Order Status: ");
         for (Order order : r.getOrders()) {
             System.out.println("Order ID: " + order.getId() + ", Status: " + order.getStatus());
         }
 
+        System.out.println("========================================");
         System.out.println("Staff Actions Available: ");
         System.out.println("""
             Waiter: 
@@ -52,11 +58,13 @@ public class StateDisplay {
             3. Serve one READY order.
             4. Wait.
             """);
+        System.out.println("========================================");
         System.out.println("""
             Chef:
             1. Cook one order.
             2. Wait.
             """);
+        System.out.println("========================================");
     }
 
     public void renderEndOfTurn(int turn, Restaurant r) {

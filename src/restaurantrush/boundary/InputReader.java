@@ -18,7 +18,7 @@ public class InputReader {
                 if (choice >= min  && choice <= max) {
                     return choice;
                 } else {
-                    System.out.printf("Enter a number between %d and %d.", min, max);
+                    System.out.printf("Enter a number between %d and %d.\n", min, max);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a number.");
