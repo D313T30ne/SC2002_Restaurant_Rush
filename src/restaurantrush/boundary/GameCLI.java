@@ -2,6 +2,7 @@ package restaurantrush.boundary;
 
 import restaurantrush.control.GameResult;
 import restaurantrush.entity.customer.Customer;
+import restaurantrush.entity.customer.CustomerState;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.order.OrderStatus;
 import restaurantrush.entity.restaurant.Restaurant;
@@ -86,31 +87,49 @@ public class GameCLI {
     }
 
     public Customer chooseSeatedCustomer(Restaurant r) {
-        int counter = 1;
-        int size = r.getCustomers().size();
+        System.out.println("--- Take order from ---");
+        List<Customer> seated = new ArrayList<>();                  // added
         for (Customer c : r.getCustomers()) {
-            System.out.println(counter + ". " + "id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+            if (c.getState() == CustomerState.SEATED) {             // added filter
+                seated.add(c);
+            }
+        }
+        if (seated.isEmpty()) {                                     // added
+            System.out.println("No seated customers to take an order from.");
+            return null;
         }
 
-        int choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
-        return r.getCustomers().get(choice - 1);
+        int counter = 1;
+        for (Customer c : seated) {
+            System.out.println(counter + ". " + "id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+            counter++;                                              // added, was missing
+        }
+
+        int choice = this.input.readInt("Choice (1-" + seated.size() + ")", 1, seated.size());
+        return seated.get(choice - 1);
     }
 
     public Order chooseReadyOrder(Restaurant r) {
-        int counter = 1;
-        int size = r.getOrders().size();
+        System.out.println("--- Choose Order to Serve ---");
+        List<Order> ready = new ArrayList<>();                      // added
         for (Order order : r.getOrders()) {
-            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
-        }
-        int choice = -1;
-        do {
-            choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
-            if (!r.getOrders().get(choice - 1).isReady()) {
-                System.out.println("Only select an order that is READY");
+            if (order.isReady()) {                                  // added filter
+                ready.add(order);
             }
-        } while (!r.getOrders().get(choice - 1).isReady());
+        }
+        if (ready.isEmpty()) {                                      // added
+            System.out.println("No READY orders to serve.");
+            return null;
+        }
 
-        return r.getOrders().get(choice - 1);
+        int counter = 1;
+        for (Order order : ready) {
+            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
+            counter++;                                              // added, was missing
+        }
+
+        int choice = this.input.readInt("Choice (1-" + ready.size() + ")", 1, ready.size());
+        return ready.get(choice - 1);
     }
 
     public Order chooseChefOrder(Restaurant r) {
@@ -134,7 +153,7 @@ public class GameCLI {
 
     public void showOrderPlaced(Customer c, Order o) {
         System.out.println("\n--- Order Placed ---");
-        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder());
+//        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder().getItem());
     }
 
     public void showActionResult(ActionResult res) {

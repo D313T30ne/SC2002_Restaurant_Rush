@@ -112,7 +112,11 @@ public class GameController {
             }
             case SERVE_ORDER: {
                 Order order = ui.chooseReadyOrder(restaurant);
-                return waiter.serveOrder(order, currentTurn);
+                ActionResult result = waiter.serveOrder(order, currentTurn);
+                if (result.isSuccess()) {
+                    restaurant.recordServed();          // added
+                }
+                return result;
             }
             case WAIT:
             default:
