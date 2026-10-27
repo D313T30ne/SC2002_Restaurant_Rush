@@ -1,6 +1,7 @@
 package restaurantrush.entity.staff;
 
 import restaurantrush.entity.order.Order;
+import restaurantrush.entity.order.OrderStatus;
 
 public class Chef extends Staff {
     public Chef(String name) {
