@@ -143,6 +143,4 @@ public class GameCLI {
     public void showActionResult(ActionResult res) {
         System.out.println(res.getMessage());
     }
-
-
 }
