@@ -87,7 +87,7 @@ public class GameCLI {
         System.out.println("\n--- Choosing first Free Table ---");
         Table table = r.findFreeTable();
         System.out.println("Table Number " + table.getNumber() + " chosen");
-        return r.findFreeTable();
+        return table;
     }
 
     public Customer chooseSeatedCustomer(Restaurant r) {
