@@ -1,7 +1,6 @@
 package restaurantrush.boundary;
 
-import java.util.Scanner;
-
+import restaurantrush.control.GameResult;
 import restaurantrush.entity.customer.Customer;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.order.OrderStatus;

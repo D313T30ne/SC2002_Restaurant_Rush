@@ -1,14 +1,18 @@
 package restaurantrush.entity.staff;
 
 import restaurantrush.entity.customer.Customer;
+import restaurantrush.entity.customer.CustomerState;
 import restaurantrush.entity.menu.Menu;
+import restaurantrush.entity.menu.MenuItem;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
 import restaurantrush.pricing.PricingPolicy;
+import restaurantrush.util.Money;
 
 public class Waiter extends Staff {
     private PricingPolicy pricing;
+    private int id =0;
  
     public Waiter(String name, PricingPolicy pricing) {
         super(name);
@@ -19,7 +23,7 @@ public class Waiter extends Staff {
     public String getRole() {
         return "Waiter";
     }
- 
+
     public ActionResult seatCustomer(Customer c, Table t, Restaurant r) {
         if (actedThisTurn) {
             return ActionResult.failure("Waiter has already acted this turn.");
@@ -30,7 +34,7 @@ public class Waiter extends Staff {
         }
     
         if (!t.isFree()) {
-            return ActionResult.failure("Table " + t.getId() + " is currently occupied.");
+            return ActionResult.failure("Table " + t.getNumber() + " is currently occupied.");
         }
     
         if (c.getState() != CustomerState.WAITING) {
@@ -42,7 +46,7 @@ public class Waiter extends Staff {
         c.setState(CustomerState.SEATED);
         
         actedThisTurn = true;
-        return ActionResult.success("Customer " + c.getId() + " seated at Table " + t.getId() + ".");
+        return ActionResult.success("Customer " + c.getId() + " seated at Table " + t.getNumber() + ".");
     }
  
     public ActionResult takeOrder(Customer c, Restaurant r, Menu menu) {
@@ -61,7 +65,8 @@ public class Waiter extends Staff {
         MenuItem item = c.chooseItem(menu);
         Money bill = pricing.priceFor(item, c);
     
-        Order order = new Order(c, item, bill);
+        Order order = new Order(id, c, item, bill);
+        id+=1;
         r.registerOrder(order);
         c.setOrder(order);
         c.setState(CustomerState.ORDERED);

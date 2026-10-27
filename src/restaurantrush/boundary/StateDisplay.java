@@ -1,5 +1,6 @@
 package restaurantrush.boundary;
 
+import restaurantrush.control.GameResult;
 import restaurantrush.entity.customer.Customer;
 import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
