@@ -1,7 +1,6 @@
 package restaurantrush.boundary;
 
-import java.util.Scanner;
-
+import restaurantrush.control.GameResult;
 import restaurantrush.entity.customer.Customer;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.restaurant.Restaurant;
@@ -66,23 +65,23 @@ public class GameCLI {
     }
 
     public Customer chooseCustomerToSeat(Restaurant r) {
-
+        return null;
     }
 
     public Table chooseFreeTable(Restaurant r) {
-
+        return null;
     }
 
     public Customer chooseSeatedCustomer(Restaurant r) {
-
+        return null;
     }
 
     public Order chooseReadyOrder(Restaurant r) {
-
+        return null;
     }
 
     public Order chooseChefOrder(Restaurant r) {
-
+        return null;
     }
 
     public void showOrderPlaced(Customer c, Order o) {
@@ -90,7 +89,7 @@ public class GameCLI {
     }
 
     public void showActionResult(ActionResult res) {
-
+        System.out.println(res.getMessage());
     }
 
 

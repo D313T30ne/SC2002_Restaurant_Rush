@@ -1,6 +1,7 @@
 package restaurantrush.entity.staff;
 
 import restaurantrush.entity.customer.Customer;
+import restaurantrush.entity.customer.CustomerState;
 import restaurantrush.entity.restaurant.Restaurant;
 
 public class Cashier extends Staff {
