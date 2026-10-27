@@ -5,6 +5,7 @@ import restaurantrush.entity.customer.Customer;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
+import restaurantrush.entity.restaurant.WaitingQueue;
 import restaurantrush.entity.staff.ActionResult;
 import restaurantrush.entity.staff.WaiterTask;
 
@@ -65,11 +66,25 @@ public class GameCLI {
     }
 
     public Customer chooseCustomerToSeat(Restaurant r) {
-        return null;
+        System.out.println("\n--- Choose Customer to Seat ---");
+        // Show the customers in the waiting queue
+        System.out.println("Enter the number to choose the customer: ");
+        int counter = 1;
+        WaitingQueue wq = r.getWaitingQueue();
+        int size = wq.getCustomers().size();
+        for (Customer c : wq.getCustomers()) {
+            System.out.println(counter + ". " + "id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+        }
+
+        int choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
+        return wq.getCustomers().get(choice - 1);
     }
 
     public Table chooseFreeTable(Restaurant r) {
-        return null;
+        System.out.println("\n--- Choose Free Table ---");
+        // Show free tables only
+        System.out.println("Choosing first free table: ");
+        return r.findFreeTable();
     }
 
     public Customer chooseSeatedCustomer(Restaurant r) {
