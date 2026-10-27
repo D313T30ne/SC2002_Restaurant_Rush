@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import restaurantrush.entity.customer.Customer;
 import restaurantrush.entity.order.Order;
+import restaurantrush.entity.order.OrderStatus;
 import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
 import restaurantrush.entity.restaurant.WaitingQueue;
@@ -75,6 +76,7 @@ public class GameCLI {
         int size = wq.getCustomers().size();
         for (Customer c : wq.getCustomers()) {
             System.out.println(counter + ". " + "id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+            counter++;
         }
 
         int choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
@@ -82,26 +84,60 @@ public class GameCLI {
     }
 
     public Table chooseFreeTable(Restaurant r) {
-        System.out.println("\n--- Choose Free Table ---");
-        // Show free tables only
-        System.out.println("Choosing first free table: ");
+        System.out.println("\n--- Choosing first Free Table ---");
+        Table table = r.findFreeTable();
+        System.out.println("Table Number " + table.getNumber() + " chosen");
         return r.findFreeTable();
     }
 
     public Customer chooseSeatedCustomer(Restaurant r) {
+        int counter = 1;
+        int size = r.getCustomers().size();
+        for (Customer c : r.getCustomers()) {
+            System.out.println(counter + ". " + "id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+        }
 
+        int choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
+        return r.getCustomers().get(choice - 1);
     }
 
     public Order chooseReadyOrder(Restaurant r) {
+        int counter = 1;
+        int size = r.getOrders().size();
+        for (Order order : r.getOrders()) {
+            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
+        }
+        int choice = -1;
+        do {
+            choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
+            if (!r.getOrders().get(choice - 1).isReady()) {
+                System.out.println("Only select an order that is READY");
+            }
+        } while (!r.getOrders().get(choice - 1).isReady());
 
+        return r.getOrders().get(choice - 1);
     }
 
     public Order chooseChefOrder(Restaurant r) {
+        int counter = 1;
+        int size = r.getOrders().size();
+        for (Order order : r.getOrders()) {
+            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
+        }
+        int choice = -1;
+        do {
+            choice = this.input.readInt("Choice (1-" + size + ")", 1, size);
+            if (!(r.getOrders().get(choice - 1).getStatus() == OrderStatus.PLACED)) {
+                System.out.println("Only select an order that is PLACED");
+            }
+        } while (!(r.getOrders().get(choice - 1).getStatus() == OrderStatus.PLACED));
 
+        return r.getOrders().get(choice - 1);
     }
 
     public void showOrderPlaced(Customer c, Order o) {
-
+        System.out.println("\n--- Order Placed ---");
+        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder());
     }
 
     public void showActionResult(ActionResult res) {
