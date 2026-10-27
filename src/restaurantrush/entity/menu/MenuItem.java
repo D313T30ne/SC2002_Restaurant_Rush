@@ -1,11 +1,13 @@
 package restaurantrush.entity.menu;
 
+import restaurantrush.util.Money;  
+
 public class MenuItem {
     private String name;
-    private int price;
+    private Money price;
     private int prepUnits;
 
-    public MenuItem(String name, int price, int prepUnits) {
+    public MenuItem(String name, Money price, int prepUnits) {
         this.name = name;
         this.price = price;
         this.prepUnits = prepUnits;
@@ -15,7 +17,7 @@ public class MenuItem {
         return this.name;
     }
 
-    public int getPrice() {
+    public Money getPrice() {
         return this.price;
     }
 
