@@ -69,7 +69,7 @@ public class Restaurant {
         revenue = revenue.add(o.getBill());
         paidCount++;
         paidSatisfactionTotal += c.getSatisfaction();
-        c.setState(CustomerState.PAID); //TODO: We can create a markPaid() method in customer to encapsulate the state transition
+        c.setState(CustomerState.PAID); 
         freeTableOf(c);
     }
 
@@ -80,7 +80,7 @@ public class Restaurant {
         if (o != null) {
             o.cancel();
         }
-        c.setState(CustomerState.LEFT); //TODO: We can create a markLeft() method in customer to encapsulate the state transition
+        c.setState(CustomerState.LEFT);
         freeTableOf(c);
         unhappyDepartures++;
     }
