@@ -48,12 +48,30 @@ public class GameCLI {
             System.out.println("1. Seat a queued customer");
         }
         // Option 2: Take Order
-        options.add(WaiterTask.TAKE_ORDER);
-        System.out.println(options.size() + ". Take one seated customer's order");
+        boolean hasSeated = false;                                      // added
+        for (Customer c : r.getCustomers()) {
+            if (c.getState() == CustomerState.SEATED) {
+                hasSeated = true;
+                break;
+            }
+        }
+        if (hasSeated) {                                                // added
+            options.add(WaiterTask.TAKE_ORDER);
+            System.out.println(options.size() + ". Take one seated customer's order");
+        }
 
         // Option 3: Serve READY order
-        options.add(WaiterTask.SERVE_ORDER);
-        System.out.println(options.size() + ". Serve one READY order");
+        boolean hasReady = false;                                       // added
+        for (Order o : r.getOrders()) {
+            if (o.isReady()) {
+                hasReady = true;
+                break;
+            }
+        }
+        if (hasReady) {                                                 // added
+            options.add(WaiterTask.SERVE_ORDER);
+            System.out.println(options.size() + ". Serve one READY order");
+        }
 
         // Option 4: Wait
         options.add(WaiterTask.WAIT);
@@ -136,7 +154,8 @@ public class GameCLI {
         System.out.println("\n--- Assign Chef Task ---");
         List<Order> placed = new ArrayList<>();                     // added
         for (Order order : r.getOrders()) {
-            if (order.getStatus() == OrderStatus.PLACED) {          // added filter
+            if (order.getStatus() == OrderStatus.PLACED
+                    || order.getStatus() == OrderStatus.PREPARING) {         // added filter
                 placed.add(order);
             }
         }
@@ -153,7 +172,7 @@ public class GameCLI {
 
     public void showOrderPlaced(Customer c, Order o) {
         System.out.println("\n--- Order Placed ---");
-//        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder().getItem());
+        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder().getItem().getName());
     }
 
     public void showActionResult(ActionResult res) {

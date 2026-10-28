@@ -98,6 +98,9 @@ public class GameController {
     private ActionResult doWaiterTask(Waiter waiter, WaiterTask task) {
         switch (task) {
             case SEAT_CUSTOMER: {
+                if (restaurant.findFreeTable() == null) {                   // added
+                    return ActionResult.failure("No free table available.");
+                }
                 Customer customer = ui.chooseCustomerToSeat(restaurant);
                 Table table = ui.chooseFreeTable(restaurant);
                 return waiter.seatCustomer(customer, table, restaurant);

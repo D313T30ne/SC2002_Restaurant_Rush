@@ -37,7 +37,7 @@ public class StateDisplay {
         System.out.println("Occupied Tables: ");
         for (Table table : r.getTables()) {
             if (!table.isFree()) {
-                System.out.println("Table No. " + table.getNumber()+" id: " + table.getOccupant().getId() + " Satisfaction: " + table.getOccupant().getSatisfaction());
+                System.out.println("Table No. " + table.getNumber()+" id: " + table.getOccupant().getId() + " Satisfaction: " + table.getOccupant().getSatisfaction() + " State: " + table.getOccupant().getState());
             }else{
                 System.out.println("Table No. " + table.getNumber());
             }
@@ -86,9 +86,9 @@ public class StateDisplay {
 
     public void renderFinal(GameResult res, Restaurant r) {
         switch (res) {
-            case VICTORY:
+            case VICTORY->
                 System.out.println("Victory");
-            case DEFEAT:
+            case DEFEAT->
                 System.out.println("Defeat");
         }
     }

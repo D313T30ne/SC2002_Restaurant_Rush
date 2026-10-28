@@ -35,7 +35,7 @@ public class Order {
         unitsRemaining--;
 
         //When unitsRemaining == 0, the order is now READY to be SERVED
-        if (unitsRemaining == 0){
+        if (unitsRemaining <= 0){
             status = OrderStatus.READY;
         }
         else{
