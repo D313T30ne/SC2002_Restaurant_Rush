@@ -142,7 +142,7 @@ public class GameCLI {
 
         int counter = 1;
         for (Order order : ready) {
-            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
+            System.out.println(counter + ". Order ID: " + order.getId() + ", Status: " + order.getStatus());
             counter++;                                              // added, was missing
         }
 
@@ -161,7 +161,7 @@ public class GameCLI {
         }
         int counter = 1;
         for (Order order : placed) {
-            System.out.println(counter + ". Order ID:" + order.getId() + ", Status: " + order.getStatus());
+            System.out.println(counter + ". Order ID: " + order.getId() + ", Status: " + order.getStatus());
             counter++;
         }
         System.out.println(counter + ". Wait");

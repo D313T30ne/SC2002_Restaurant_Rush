@@ -56,14 +56,12 @@ public class StateDisplay {
             1. Seat a queued customer.
             2. Take one seated customer's order.
             3. Serve one READY order.
-            4. Wait.
-            """);
+            4. Wait.""");
         System.out.println("========================================");
         System.out.println("""
             Chef:
             1. Cook one order.
-            2. Wait.
-            """);
+            2. Wait.""");
         System.out.println("========================================");
     }
 
