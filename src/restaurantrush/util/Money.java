@@ -24,4 +24,12 @@ public class Money implements Comparable<Money> {
     public String toString() {
         return String.format("$%.2f", this.cents / 100.0);
     }
+
+    public Money applyPercentDiscount(int percent) {
+        if (percent < 0 || percent > 100) {
+            throw new IllegalArgumentException("Percent must be 0-100: " + percent);
+        }
+        long discounted = (cents * (100 - percent) + 50) / 100;
+        return new Money(discounted);
+    }
 }
