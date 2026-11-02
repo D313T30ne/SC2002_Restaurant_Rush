@@ -10,11 +10,8 @@ import restaurantrush.entity.menu.Menu;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
-import restaurantrush.entity.staff.ActionResult;
-import restaurantrush.entity.staff.Cashier;
-import restaurantrush.entity.staff.Chef;
-import restaurantrush.entity.staff.Waiter;
-import restaurantrush.entity.staff.WaiterTask;
+import restaurantrush.entity.staff.*;
+import restaurantrush.pricing.HappyHourPolicy;
 import restaurantrush.pricing.StandardPricing;
 
 /**
@@ -30,6 +27,7 @@ public class GameController {
     private int currentTurn;
     private final Restaurant restaurant;
     private final Menu menu;
+    private final HappyHourPolicy happyHour;
     private final GameConfig config;
     private final ArrivalScheduler scheduler;
     private final ObjectiveChecker checker;
@@ -38,9 +36,11 @@ public class GameController {
     public GameController(GameConfig config, GameCLI ui) {
         this.config = config;
         this.ui = ui;
+        this.happyHour = new HappyHourPolicy(new StandardPricing());
         this.restaurant = new Restaurant(
                 config.getTableCount(),
                 new Waiter("Waiter", new StandardPricing()),
+                new Host("Host"),
                 new Chef("Chef"),
                 new Cashier("Cashier"));
         this.menu = new Menu();
@@ -60,11 +60,14 @@ public class GameController {
 
     private void runTurn() {
         restaurant.getWaiter().startTurn();
+        restaurant.getHost().startTurn();
         restaurant.getChef().startTurn();
         restaurant.getCashier().startTurn();
 
         processArrivals();                          // step 1
-        ui.showStartOfTurn(currentTurn, restaurant); // shown after arrivals so the new customer is visible
+        ui.showStartOfTurn(currentTurn, restaurant, happyHour); // shown after arrivals so the new customer is visible
+        runHappyHourPhase();
+        runHostPhase();
         runWaiterPhase();                           // steps 2 + 3: Waiter acts before Chef
         runChefPhase();
         processEatingAndPayment();                  // step 4
@@ -78,6 +81,47 @@ public class GameController {
         for (Customer c : scheduler.customersArrivingOn(currentTurn)) {
             restaurant.addArrival(c); // joins the waiting queue with satisfaction 100
         }
+    }
+
+    /**
+     * At the start of the turn the manager may switch Happy Hour on (once per game).
+     * While it is active, every customer still waiting for a table or food recovers
+     * satisfaction (capped at 100). The 20% discount is applied later, when orders are taken.
+     */
+    private void runHappyHourPhase() {
+        if (happyHour.isAvailable() && ui.askActivateHappyHour(happyHour)) {
+            happyHour.activate();
+            ui.showHappyHourStarted(happyHour);
+        }
+        if (happyHour.isActive()) {
+            List<Customer> helped = new ArrayList<>();
+            for (Customer c : restaurant.getCustomers()) {
+                if (c.isAwaitingService()) {
+                    c.recoverSatisfaction(HappyHourPolicy.RECOVERY_POINTS);
+                    helped.add(c);
+                }
+            }
+            ui.showHappyHourRecovery(helped, happyHour);
+        }
+    }
+
+    /** Same rule as the Waiter: a failed action does not use up the Host's task. */
+    private void runHostPhase() {
+        Host host = restaurant.getHost();
+        while (!host.hasActed()) {
+            boolean seat = ui.chooseHostSeat(restaurant);
+            ActionResult result = seat ? hostSeat(host) : host.waitTurn();
+            ui.showActionResult(result);
+        }
+    }
+
+    private ActionResult hostSeat(Host host) {
+        if (restaurant.findFreeTable() == null) {
+            return ActionResult.failure("No free table available.");
+        }
+        Customer customer = ui.chooseCustomerToSeat(restaurant);
+        Table table = ui.chooseFreeTable(restaurant);
+        return host.seatCustomer(customer, table, restaurant);
     }
 
     // ---------- Steps 2 and 3: Waiter ----------

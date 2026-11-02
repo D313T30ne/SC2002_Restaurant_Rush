@@ -10,6 +10,7 @@ import restaurantrush.entity.restaurant.Table;
 import restaurantrush.entity.restaurant.WaitingQueue;
 import restaurantrush.entity.staff.ActionResult;
 import restaurantrush.entity.staff.WaiterTask;
+import restaurantrush.pricing.HappyHourPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class GameCLI {
         this.display = new StateDisplay();
     }
 
-    public void showStartOfTurn(int turn, Restaurant r) {
-        display.renderStartOfTurn(turn, r);
+    public void showStartOfTurn(int turn, Restaurant r, HappyHourPolicy happyHour) {
+        display.renderStartOfTurn(turn, r, happyHour);
     }
 
     public void showEndOfTurn(int turn, Restaurant r) {
@@ -37,6 +38,47 @@ public class GameCLI {
 
     public void showFinalResult(GameResult res, Restaurant r) {
         display.renderFinal(res, r);
+    }
+
+    // ---------- Stage 3 ----------
+
+    /** Asked at the start of every turn until the manager has used Happy Hour. */
+    public boolean askActivateHappyHour(HappyHourPolicy happyHour) {
+        System.out.println("\n--- Happy Hour (once per game) ---");
+        System.out.println("Lasts this turn and the next: orders taken get 20% off, and customers");
+        System.out.println("still waiting for a table or food recover " + HappyHourPolicy.RECOVERY_POINTS + " satisfaction at turn start.");
+        System.out.println("1. Activate Happy Hour now");
+        System.out.println("2. Not now");
+        return this.input.readInt("Choice (1-2): ", 1, 2) == 1;
+    }
+
+    public void showHappyHourStarted(HappyHourPolicy happyHour) {
+        System.out.println("Happy Hour is ON"+ display.describeHappyHour(happyHour) +".");
+    }
+
+    public void showHappyHourRecovery(List<Customer> helped, HappyHourPolicy happyHour) {
+        System.out.println("\n--- Happy Hour recovery (" + happyHour.getTurnsRemaining() + " turn(s) remaining incl. this one) ---");
+        if (helped.isEmpty()) {
+            System.out.println("No customers are waiting for a table or food.");
+            return;
+        }
+        for (Customer c : helped) {
+            System.out.println("id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+        }
+    }
+
+    /** Returns true if the manager wants the Host to seat a queued customer, false for Wait. */
+    public boolean chooseHostSeat(Restaurant r) {
+        System.out.println("\n--- Assign Host Task ---");
+        boolean canSeat = !r.getWaitingQueue().isEmpty();
+        if (canSeat) {
+            System.out.println("1. Seat a queued customer");
+        }
+        int waitOption = canSeat ? 2 : 1;
+        System.out.println(waitOption + ". Wait");
+
+        int choice = this.input.readInt("Select a host task (1-" + waitOption + "): ", 1, waitOption);
+        return canSeat && choice == 1;
     }
 
     public WaiterTask chooseWaiterTask(Restaurant r) {

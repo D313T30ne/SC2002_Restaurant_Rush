@@ -6,10 +6,11 @@ import restaurantrush.entity.restaurant.Restaurant;
 import restaurantrush.entity.restaurant.Table;
 import restaurantrush.entity.restaurant.WaitingQueue;
 import restaurantrush.entity.order.Order;
+import restaurantrush.pricing.HappyHourPolicy;
 
 // Helper for GameCLI
 public class StateDisplay {
-    public void renderStartOfTurn(int turn, Restaurant r) {
+    public void renderStartOfTurn(int turn, Restaurant r, HappyHourPolicy happyHour) {
         System.out.println("\n========================================");
         System.out.println("               Start of turn: " + turn               );
         System.out.println("========================================");
@@ -21,7 +22,7 @@ public class StateDisplay {
         } else {
             System.out.println("Average satisfaction: " + r.getAverageSatisfaction());
         }
-
+        System.out.println("Happy Hour    : " + describeHappyHour(happyHour));
         System.out.println("========================================");
         System.out.println("Waiting Queue: ");
         WaitingQueue wq = r.getWaitingQueue();
@@ -51,6 +52,10 @@ public class StateDisplay {
 
         System.out.println("========================================");
         System.out.println("Staff Actions Available: ");
+        System.out.println("""
+            Host:
+            1. Seat a queued customer.
+            2. Wait.""");
         System.out.println("""
             Waiter: 
             1. Seat a queued customer.
@@ -89,5 +94,16 @@ public class StateDisplay {
             case DEFEAT->
                 System.out.println("Defeat");
         }
+    }
+
+    // Stage 3: remaining duration is shown while Happy Hour is active
+    public String describeHappyHour(HappyHourPolicy happyHour) {
+        if (happyHour.isActive()) {
+            return "ACTIVE, " + happyHour.getTurnsRemaining() + " turn(s) remaining including this one";
+        }
+        if (happyHour.isAvailable()) {
+            return "available (once per game, lasts " + HappyHourPolicy.DURATION_TURNS + " turns)";
+        }
+        return "used";
     }
 }
