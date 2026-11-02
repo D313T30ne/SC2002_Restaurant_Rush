@@ -25,7 +25,8 @@ public class ArrivalScheduler {
     /** Returns the customers who arrive at the start of this turn (empty list if none). */
     public List<Customer> customersArrivingOn(int turn) {
         List<Customer> arrivals = new ArrayList<>();
-        if (config.getArrivalTurns().contains(turn)) {
+        int arrivalIndex = config.getArrivalTurns().indexOf(turn);
+        if (arrivalIndex >= 0) {
             arrivals.add(createCustomer());
         }
         return arrivals;
