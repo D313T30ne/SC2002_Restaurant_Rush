@@ -114,6 +114,16 @@ public abstract class Customer {
     /** Satisfaction lost per waiting turn. Decided by each customer type. */
     protected abstract int getWaitingLoss();
 
+    /**
+     * Stage 3: Happy Hour recovery. Only customers still waiting for a table or food recover.
+     * Satisfaction never goes above 100.
+     */
+    public void recoverSatisfaction(int points) {
+        if (isAwaitingService()) {
+            satisfaction = Math.min(INITIAL_SATISFACTION, satisfaction + points);
+        }
+    }
+
     // ------------------------------------------------------------------
     // Accessors
     // ------------------------------------------------------------------

@@ -5,6 +5,7 @@ import restaurantrush.entity.customer.CustomerState;
 import restaurantrush.entity.order.Order;
 import restaurantrush.entity.staff.Cashier;
 import restaurantrush.entity.staff.Chef;
+import restaurantrush.entity.staff.Host;
 import restaurantrush.entity.staff.Waiter;
 import restaurantrush.util.Money;
 
@@ -19,6 +20,7 @@ public class Restaurant {
     private final List<Order> orderList = new ArrayList<>();
 
     private final Waiter waiter;
+    private final Host host;
     private final Chef chef;
     private final Cashier cashier;
 
@@ -28,11 +30,12 @@ public class Restaurant {
     private int servedCount;
     private int unhappyDepartures;
 
-    public Restaurant(int tableCount, Waiter waiter, Chef chef, Cashier cashier) {
+    public Restaurant(int tableCount, Waiter waiter, Host host, Chef chef, Cashier cashier) {
         for (int i = 1; i <= tableCount; i++) {
             tableList.add(new Table(i));
         }
         this.waiter = waiter;
+        this.host = host;
         this.chef = chef;
         this.cashier = cashier;
     }
@@ -138,6 +141,8 @@ public class Restaurant {
     public Waiter getWaiter() {
         return waiter;
     }
+
+    public Host getHost() { return host; }
 
     public Chef getChef() {
         return chef;
