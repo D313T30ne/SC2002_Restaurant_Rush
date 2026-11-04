@@ -25,12 +25,12 @@ public class GameConfig {
     private final long seed;
 
     private GameConfig(int totalTurns, int tableCount, List<Integer> arrivalTurns, List<IntFunction<Customer>> arrivalPlan, long seed) {
-        this.arrivalPlan = arrivalPlan;
         if (arrivalPlan.size() != arrivalTurns.size()) {
             throw new IllegalArgumentException(
                     "Arrival plan needs one entry per arrival turn: expected "
                             + arrivalTurns.size() + " but got " + arrivalPlan.size());
         }
+        this.arrivalPlan = Collections.unmodifiableList(new ArrayList<>(arrivalPlan));
         this.totalTurns = totalTurns;
         this.tableCount = tableCount;
         this.arrivalTurns = Collections.unmodifiableList(new ArrayList<>(arrivalTurns));
@@ -65,6 +65,11 @@ public class GameConfig {
 
     public List<Integer> getArrivalTurns() {
         return arrivalTurns;
+    }
+
+    /** One customer factory per arrival turn, in the same order as getArrivalTurns(). */
+    public List<IntFunction<Customer>> getArrivalPlan() {
+        return arrivalPlan;
     }
 
     public long getSeed() {

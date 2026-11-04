@@ -30,7 +30,7 @@ public class StateDisplay {
             System.out.println("(empty)");
         } else {
             for (Customer c : wq.getCustomers()) {
-                System.out.println("id: " + c.getId() + " Satisfaction: " + c.getSatisfaction());
+                System.out.println("id: " + c.getId() + " (" + c.getClass().getSimpleName() + ") Satisfaction: " + c.getSatisfaction());
             }
         }
 
@@ -38,7 +38,8 @@ public class StateDisplay {
         System.out.println("Occupied Tables: ");
         for (Table table : r.getTables()) {
             if (!table.isFree()) {
-                System.out.println("Table No. " + table.getNumber()+" id: " + table.getOccupant().getId() + " Satisfaction: " + table.getOccupant().getSatisfaction() + " State: " + table.getOccupant().getState());
+                System.out.println("Table No. " + table.getNumber()+" id: " + table.getOccupant().getId()
+                        + " (" + table.getOccupant().getClass().getSimpleName() + ") Satisfaction: " + table.getOccupant().getSatisfaction() + " State: " + table.getOccupant().getState());
             }else{
                 System.out.println("Table No. " + table.getNumber());
             }
@@ -47,7 +48,8 @@ public class StateDisplay {
         System.out.println("========================================");
         System.out.println("Order Status: ");
         for (Order order : r.getOrders()) {
-            System.out.println("Order ID: " + order.getId() + ", Status: " + order.getStatus());
+            System.out.println("Order ID: " + order.getId() + ", " + order.getItem().getName()
+                    + ", Bill: " + order.getBill() + ", Status: " + order.getStatus());
         }
 
         System.out.println("========================================");

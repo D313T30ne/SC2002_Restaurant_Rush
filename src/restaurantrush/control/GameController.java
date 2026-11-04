@@ -36,10 +36,12 @@ public class GameController {
     public GameController(GameConfig config, GameCLI ui) {
         this.config = config;
         this.ui = ui;
+        // The Waiter prices every order through Happy Hour, which wraps StandardPricing:
+        // VIP discount first (StandardPricing -> Customer.calculateBill), then 20% off while active.
         this.happyHour = new HappyHourPolicy(new StandardPricing());
         this.restaurant = new Restaurant(
                 config.getTableCount(),
-                new Waiter("Waiter", new StandardPricing()),
+                new Waiter("Waiter", happyHour),
                 new Host("Host"),
                 new Chef("Chef"),
                 new Cashier("Cashier"));
@@ -73,6 +75,7 @@ public class GameController {
         processEatingAndPayment();                  // step 4
         applyWaitingLoss();                         // step 5
         ui.showEndOfTurn(currentTurn, restaurant);
+        happyHour.endTurn();                        // Happy Hour lasts the activation turn and the next only
     }
 
     // ---------- Step 1: arrivals ----------

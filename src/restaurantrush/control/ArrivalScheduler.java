@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import restaurantrush.entity.customer.Customer;
-import restaurantrush.entity.customer.RegularCustomer;
 
 /**
  * Decides who arrives on which turn (brief section 2.1).
- * Stage 1: one RegularCustomer on each arrival turn in the config.
- * Stage 2 only needs to change createCustomer() to mix in VIP / Critic,
- * so the controller never has to know which customer types exist.
+ * Stage 2+: the customer type for each arrival comes from GameConfig's arrival plan
+ * (base setting: Regular, VIP, Regular, Critic, Regular, Regular), so the controller
+ * never has to know which customer types exist.
  */
 public class ArrivalScheduler {
 
@@ -27,13 +26,14 @@ public class ArrivalScheduler {
         List<Customer> arrivals = new ArrayList<>();
         int arrivalIndex = config.getArrivalTurns().indexOf(turn);
         if (arrivalIndex >= 0) {
-            arrivals.add(createCustomer());
+            arrivals.add(createCustomer(arrivalIndex));
         }
         return arrivals;
     }
 
-    private Customer createCustomer() {
-        Customer customer = new RegularCustomer(nextCustomerId);
+    /** Builds the customer type the config's arrival plan lists for this arrival slot. */
+    private Customer createCustomer(int arrivalIndex) {
+        Customer customer = config.getArrivalPlan().get(arrivalIndex).apply(nextCustomerId);
         nextCustomerId++;
         return customer;
     }
