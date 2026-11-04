@@ -53,7 +53,7 @@ public class GameCLI {
     }
 
     public void showHappyHourStarted(HappyHourPolicy happyHour) {
-        System.out.println("Happy Hour is ON"+ display.describeHappyHour(happyHour) +".");
+        System.out.println("Happy Hour is ON: " + display.describeHappyHour(happyHour) + ".");
     }
 
     public void showHappyHourRecovery(List<Customer> helped, HappyHourPolicy happyHour) {
@@ -214,7 +214,10 @@ public class GameCLI {
 
     public void showOrderPlaced(Customer c, Order o) {
         System.out.println("\n--- Order Placed ---");
-        System.out.println("Customer ID: " + c.getId() + ", Order: " + c.getOrder().getItem().getName());
+        System.out.println("Customer ID: " + c.getId() + " (" + c.getClass().getSimpleName() + ")"
+                + ", Order: " + o.getItem().getName()
+                + ", Prep units: " + o.getItem().getPrepUnits()
+                + ", Bill (locked): " + o.getBill());
     }
 
     public void showActionResult(ActionResult res) {

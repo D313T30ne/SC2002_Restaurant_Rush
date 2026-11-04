@@ -2,6 +2,7 @@ package restaurantrush.entity.customer;
 
 import java.util.List;
 
+import restaurantrush.entity.menu.ComboMeal;
 import restaurantrush.entity.menu.Menu;
 import restaurantrush.entity.menu.MenuItem;
 import restaurantrush.entity.order.Order;
@@ -47,11 +48,19 @@ public abstract class Customer {
     /**
      * Picks the dish this customer orders. The manager never chooses food.
      *
-     * Rule (deterministic, so runs are reproducible): customer N orders the
-     * ((N - 1) mod menuSize)-th item on the menu. With the base menu
-     * (Salad, Burger, Pasta) customers 1..6 order Salad, Burger, Pasta, Salad, Burger, Pasta.
+     * Rule (deterministic, so runs are reproducible):
+     *  - Stage 3 combo rule: every third customer (id divisible by 3) orders a combo,
+     *    cycling through the menu's combos: customer 3 -> 1st combo, customer 6 -> 2nd, ...
+     *    With the base menu: customer 3 = Salad + Pasta ($24.30), customer 6 = Salad + Burger ($21.60).
+     *  - Otherwise customer N orders the ((N - 1) mod itemCount)-th single item, so
+     *    customers 1, 2, 4, 5 order Salad, Burger, Salad, Burger.
+     * Subclasses may override (CriticCustomer always orders the priciest single item).
      */
     public MenuItem chooseItem(Menu menu) {
+        List<ComboMeal> combos = menu.getCombos();
+        if (id % 3 == 0 && !combos.isEmpty()) {
+            return combos.get((id / 3 - 1) % combos.size());
+        }
         List<MenuItem> items = menu.getItems();
         if (items.isEmpty()) {
             throw new IllegalStateException("Menu has no items to choose from.");
