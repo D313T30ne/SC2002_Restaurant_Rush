@@ -67,7 +67,7 @@ restaurant-rush/
 
 ### Stages
 
-1. **Stage 1 (`stage-1`)**: Regular customers, the base menu, Waiter, Chef, Cashier, tables, orders, queue, full turn flow, and victory/defeat. Include reproducible victory and defeat scenarios in `docs/test-notes/`.
+1. **Stage 1 (`stage-1`)**: Regular customers, the base menu, Waiter, Chef, Cashier, tables, orders, queue, full turn flow, and victory/defeat. Include reproducible victory and defeat scenarios.
 2. **Stage 2 (`stage-2`)**: Add VIP customers (5 satisfaction loss per waiting turn and 10% discount) and Critic customers (12 satisfaction loss and a documented distinct preference or service reaction). Dispatch customer-specific behavior through customer objects, not type-check chains in the turn controller. A reproducible run must include both types.
 3. **Stage 3 (`stage-3`)**: Add a Host who can seat one queued customer per turn in addition to the Waiter; `ComboMeal` made from two menu items, priced at 90% of their combined price and rounded to cents; and Happy Hour, activated once per game for the current and following turn. Happy Hour discounts new orders by 20% and restores up to 15 satisfaction to customers still waiting for a table or food at the start of each active turn. Apply the VIP discount before Happy Hour and lock the price when an order is taken.
 
