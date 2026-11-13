@@ -6,7 +6,7 @@
 | GameCLI | Class | Boundary | Provides the interface between the user and the system. Renders prompts and receives user input. |
 | GameController | Class | Control | Runs the core business logic of the game flow. It processes user actions and modifies the restaurant state. |
 | Restaurant | Class | Entity | An object that stores all important data within a single playthrough, such as the Table, WaitingQueue, Order, revenue, satisfaction and customer statistics. |
-| PricingPolicy | Interface | Control | An interface that implements the **Strategy Pattern** to provide encapsulation for different pricing policies such as StandardPricing, and HappyHourPolicy. |
+| PricingPolicy | Interface | Control | An interface that implements the **Strategy Pattern** to provide abstraction for different pricing policies such as StandardPricing, and HappyHourPolicy. |
 | Money | Class | Entity | Serves as a "wallet" for the restaurant to provide abstraction for adding, comparing and printing monetary values. |
 | Menu | Class | Entity | Manages the collection of MenuItems. It encapsulates the list by restricting direct modification of the dishes offered in the restaurant. |
 | Customer | Class | Entity | Holds the state of a customer, namely satisfaction, state, order, served turn, and the turn they are ready to pay. |
