@@ -9,14 +9,21 @@
 | PricingPolicy | Interface | Control | An interface that implements the **Strategy Pattern** to provide encapsulation for different pricing policies such as StandardPricing, and HappyHourPolicy. |
 | Money | Class | Entity | Serves as a "wallet" for the restaurant to provide abstraction for adding, comparing and printing monetary values. |
 | Menu | Class | Entity | Manages the collection of MenuItems. It encapsulates the list by restricting direct modification of the dishes offered in the restaurant. |
+| Customer | Class | Entity | Holds the state of a customer, namely satisfaction, state, order, served turn, and the turn they are ready to pay. |
+| Staff | Abstract Class | Entity | An abstraction of a Waiter or Chef. This abstract class tracks whether the Staff has acted this turn, enforcing the one-action-per-turn rule. |
 
 ## SRP, OCP, LSP, ISP and DIP, only where genuinely reflected in your code.
 | SOLID principle applied | Explanation |
 | ----------------------- | ----------- |
-| SRP | GameCLI performs the printing of UI, while GameController runs the game flow. All classes stick to one responsiblity to reduce code clutter. |
-| OCP | PricingPolicy interface is used in Waiter class to determine the correct pricing for different customers or scenarios. By creating abstraction using a `priceFor()` method, the application is open to extension by adding more pricing policies without modifying the Waiter class source code. |
-| LSP | Between MenuItem and ComboMeal, the system manages the Menu using the polymorphic collection `List<MenuItem>`. Since ComboMeal extends MenuItem, the subtype ComboMeal is substitutable for a MenuItem without altering the correctness of the program. |
-| DIP | The high-level module Waiter is responsible for taking an order and applying the appropriate pricing. It does not depend on low-level modules with specific mathematical implementations such as `StandardPricing` or `HappyHourPolicy`. Instead, it depends on the `PricingPolicy` interface, which is an abstraction of both pricing types. This ensures both high and low-level modules depend on a common abstraction. The result is **loose coupling**, allowing us to add or modify pricing strategies without breaking the Waiter class. |
+| SRP | `GameCLI` performs the printing of UI, while `GameController` runs the game flow. All classes stick to one responsiblity to reduce code clutter. |
+| SRP| Within `GameCLI`, `InputReader` only reads and validates numbers, `StateDisplay` only renders the turns. |
+| SRP | `Money` object performs the currency arithmetic and comparison, other classes do not have to do so. |
+| OCP | `PricingPolicy` interface is used in `Waiter` class to determine the correct pricing for different customers or scenarios. By creating abstraction using a `priceFor()` method, the application is open to extension by adding more pricing policies without modifying the `Waiter` class source code. |
+| OCP | Stage 2 added `VIPCustomer` and `CriticCustomer` as new subclasses of `Customer` that override `getWaitingLoss()`, `chooseItem()` and `calculateBill()`. `GameController`, `Waiter` and `StandardPricing` are closed for modification as they are unchanged. |
+| LSP | Between `MenuItem` and `ComboMeal`, the system manages the `Menu` using the polymorphic collection `List<MenuItem>`. Since `ComboMeal` extends `MenuItem`, the subtype `ComboMeal` is substitutable for a `MenuItem` without altering the correctness of the program. |
+| LSP | Any `Customer` subclass goes through the same order → serve → eat → pay flow. Overrides change only a number or a choice. They do not add preconditions or skip lifecycle states |
+| ISP | `Staff` holds only what every role shares such as `name`, `startTurn()`, `hasActed()` and `getRole()`. There’s no single `act()` method that would force a `Cashier` to accept a table or a `Chef` to accept a customer. Each role exposes only its own actions. |
+| DIP | The high-level module `Waiter` is responsible for taking an order and applying the appropriate pricing. It does not depend on low-level modules with specific mathematical implementations such as `StandardPricing` or `HappyHourPolicy`. Instead, it depends on the `PricingPolicy` interface, which is an abstraction of both pricing types. This ensures both high and low-level modules depend on a common abstraction. The result is **loose coupling**, allowing us to add or modify pricing strategies without breaking the `Waiter` class. |
 
 ## Trade-offs, and one alternative design you considered.
 ### `Money` object versus `int cents` for revenue (Flexibility vs Simplicity)
@@ -41,3 +48,10 @@ If the player made poor choices, unhappy departures are triggered. If the Restau
 It takes minimally 4 turns from a seated customer to a paid customer. Since the game requires only 4 paid customers at the end of turn 18, it is possible to complete the game.
 
 If the Restaurant had less than 4 paid customers at the end of turn 18, the result is Defeat.
+
+### Stages
+| Stage | Git tag | Commit / compare link | Features shown |
+| ----- | ------- | --------------------- | -------------- |
+| 1 | stage-1 | https://github.com/D313T30ne/SC2002_Restaurant_Rush/releases/tag/stage-1 | Regular Customer, Menu, Waiter, Chef, Cashier, full turn sequence, both endings |
+| 2 | stage-2 | https://github.com/D313T30ne/SC2002_Restaurant_Rush/releases/tag/stage-2 | VIP and Critic Customer |
+| 3 | stage-3 | https://github.com/D313T30ne/SC2002_Restaurant_Rush/releases/tag/stage-3 | Host, ComboMeal, HappyHour |
