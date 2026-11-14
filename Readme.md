@@ -124,13 +124,11 @@ SC2002_Restaurant_Rush/
 - **Class diagrams:** `docs/uml/` (Stage 1, Stage 2 and Stage 3).
 - **Sequence diagram:** `docs/uml/sequence_diagram_stage_3.png`, with an editable `sequence_diagram_stage_3.drawio.svg`.
 - **Design discussion:** [`DESIGN.md`](DESIGN.md).
-- **Declarations:** `docs/declarations/`.
+- **Declarations:** under individual branch.
 
 ## Links
 
 Repository URL: https://github.com/D313T30ne/SC2002_Restaurant_Rush.git
-
-Video link: TBD
 
 Video timestamps:
 
