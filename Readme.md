@@ -132,7 +132,7 @@ Repository URL: https://github.com/D313T30ne/SC2002_Restaurant_Rush.git
 
 Video timestamps:
 
-Video link: https://drive.google.com/file/d/1F1_FPsT-0m02wFLZv7fnWfqKIeaNncNo/view?usp=sharing
+Video link: [https://drive.google.com/file/d/1F1_FPsT-0m02wFLZv7fnWfqKIeaNncNo/view?usp=sharing](https://drive.google.com/file/d/1poTFD3Nvlh93CZu-olMDYIGwJ_x5n4vO/view?usp=sharing)
 
 Video timestamps: 
 00:00 Game Overview
