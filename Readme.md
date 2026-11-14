@@ -134,6 +134,11 @@ Video link: TBD
 
 Video timestamps:
 
-| Member | Segment | Timestamp |
-| ------ | ------- | --------- |
-| TBD | TBD | TBD |
+Video link: https://drive.google.com/file/d/1F1_FPsT-0m02wFLZv7fnWfqKIeaNncNo/view?usp=sharing
+
+Video timestamps: 
+00:00 Game Overview
+01:45 Gameplay Demo
+06:03 Class Diagram
+10:10 Sequence Diagram
+12:45 Individual Reflection
