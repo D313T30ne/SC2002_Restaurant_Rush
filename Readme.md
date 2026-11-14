@@ -46,9 +46,7 @@ SC2002_Restaurant_Rush/
 ├── .gitignore
 ├── SC2002_Restaurant_Rush.iml          # IntelliJ project files (.idea/ too)
 ├── docs/
-│   ├── SC2002_Restaurant_Rush_Group_Assignment.docx   # the assignment brief
-│   ├── Stage1-ToDo.txt
-│   ├── stage-1-class.png
+|   ├── SC2002 Submission Report
 │   ├── uml/                            # class diagrams (Stage 1 to 3) and the Stage 3 sequence diagram
 │   └── declarations/                   # declarations on the use of GAI
 └── src/restaurantrush/
@@ -130,13 +128,16 @@ SC2002_Restaurant_Rush/
 
 Repository URL: https://github.com/D313T30ne/SC2002_Restaurant_Rush.git
 
-Video timestamps:
-
 Video link: [https://drive.google.com/file/d/1F1_FPsT-0m02wFLZv7fnWfqKIeaNncNo/view?usp=sharing](https://drive.google.com/file/d/1poTFD3Nvlh93CZu-olMDYIGwJ_x5n4vO/view?usp=sharing)
 
 Video timestamps: 
+
 00:00 Game Overview
+
 01:45 Gameplay Demo
+
 06:03 Class Diagram
+
 10:10 Sequence Diagram
+
 12:45 Individual Reflection
